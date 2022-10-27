@@ -5,7 +5,7 @@ import kotlinx.serialization.json.*
 import kotlin.test.*
 
 class JsonOverwriteKeyTest : JsonTestBase() {
-    private val json = Json
+    private val json = Json { allowDuplicatedKeys = true }
 
     @Serializable
     data class Data(val a: Int)
