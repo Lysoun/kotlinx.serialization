@@ -260,6 +260,13 @@ public class JsonBuilder internal constructor(json: Json) {
     public var allowStructuredMapKeys: Boolean = json.configuration.allowStructuredMapKeys
 
     /**
+     * Enables decoding of JSON with duplicated keys.
+     * The value associated to a duplicated key will be the last one found in the JSON.
+     * `false` by default
+     */
+    public var allowDuplicatedKeys: Boolean = json.configuration.allowDuplicatedKeys
+
+    /**
      * Specifies whether resulting JSON should be pretty-printed.
      *  `false` by default.
      */
@@ -340,7 +347,7 @@ public class JsonBuilder internal constructor(json: Json) {
             encodeDefaults, ignoreUnknownKeys, isLenient,
             allowStructuredMapKeys, prettyPrint, explicitNulls, prettyPrintIndent,
             coerceInputValues, useArrayPolymorphism,
-            classDiscriminator, allowSpecialFloatingPointValues, useAlternativeNames
+            classDiscriminator, allowSpecialFloatingPointValues, useAlternativeNames, allowDuplicatedKeys
         )
     }
 }

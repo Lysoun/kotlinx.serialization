@@ -13,6 +13,7 @@ internal class JsonTreeReader(
     private val lexer: AbstractJsonLexer
 ) {
     private val isLenient = configuration.isLenient
+    private val allowDuplicatedKeys = configuration.allowDuplicatedKeys
     private var stackDepth = 0
 
     private fun readObject(): JsonElement = readObjectImpl {
@@ -27,8 +28,13 @@ internal class JsonTreeReader(
         if (lexer.peekNextToken() == TC_COMMA) lexer.fail("Unexpected leading comma")
         val result = linkedMapOf<String, JsonElement>()
         while (lexer.canConsumeValue()) {
-            // Read key and value
+            // Read key and check that it is not already present in result
             val key = if (isLenient) lexer.consumeStringLenient() else lexer.consumeString()
+            if (result.containsKey(key) && !allowDuplicatedKeys) {
+                throw DuplicatedKeyException(key)
+            }
+
+            // Read value
             lexer.consumeNextToken(TC_COLON)
             val element = reader()
             result[key] = element
@@ -46,6 +52,7 @@ internal class JsonTreeReader(
         } else if (lastToken == TC_COMMA) { // Trailing comma
             lexer.fail("Unexpected trailing comma")
         }
+
         return JsonObject(result)
     }
 

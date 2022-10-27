@@ -75,6 +75,12 @@ internal fun UnknownKeyException(key: String, input: String) = JsonDecodingExcep
             "Current input: ${input.minify()}"
 )
 
+@OptIn(ExperimentalSerializationApi::class)
+internal fun DuplicatedKeyException(key: String) = JsonDecodingException(
+    "Duplicated key found in your JSON: '$key'.\n" +
+            "$allowDuplicatedKeysHint\n"
+)
+
 private fun CharSequence.minify(offset: Int = -1): CharSequence {
     if (length < 200) return this
     if (offset == -1) {

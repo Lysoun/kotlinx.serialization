@@ -17,6 +17,8 @@ internal const val specialFlowingValuesHint =
 internal const val ignoreUnknownKeysHint = "Use 'ignoreUnknownKeys = true' in 'Json {}' builder to ignore unknown keys."
 internal const val allowStructuredMapKeysHint =
     "Use 'allowStructuredMapKeys = true' in 'Json {}' builder to convert such maps to [key1, value1, key2, value2,...] arrays."
+internal const val allowDuplicatedKeysHint = "Use 'allowDuplicatedKeys = true' in 'Json {}' builder to decode JSON with duplicated keys. " +
+        "The value you will have for that field will be the last value given for that key in your JSON."
 
 // special strings
 internal const val NULL = "null"

@@ -23,6 +23,15 @@ class JsonConfigurationTest {
         assertFailsWith<IllegalArgumentException> { json(true, "\tf\n") }
     }
 
+    /**
+     * Check default values
+     */
+
+    @Test
+    fun allowDuplicatedKeysShouldBeFalseByDefault() {
+        assertFalse(Json.Default.configuration.allowDuplicatedKeys)
+    }
+
     private fun json(prettyPrint: Boolean, prettyPrintIndent: String) = Json {
         this.prettyPrint = prettyPrint
         this.prettyPrintIndent = prettyPrintIndent

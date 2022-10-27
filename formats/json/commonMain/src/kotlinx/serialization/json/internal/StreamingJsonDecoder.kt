@@ -25,6 +25,7 @@ internal open class StreamingJsonDecoder(
     descriptor: SerialDescriptor,
     discriminatorHolder: DiscriminatorHolder?
 ) : JsonDecoder, AbstractDecoder() {
+    private val keysSet = mutableSetOf<String>()
 
     // A mutable reference to the discriminator that have to be skipped when in optimistic phase
     // of polymorphic serialization, see `decodeSerializableValue`
@@ -219,6 +220,14 @@ internal open class StreamingJsonDecoder(
         while (lexer.canConsumeValue()) { // TODO: consider merging comma consumption and this check
             hasComma = false
             val key = decodeStringKey()
+            if (!configuration.allowDuplicatedKeys) {
+                if (keysSet.contains(key)) {
+                    throw DuplicatedKeyException(key)
+                }
+
+                keysSet.add(key)
+            }
+
             lexer.consumeNextToken(COLON)
             val index = descriptor.getJsonNameIndex(json, key)
             val isUnknown = if (index != UNKNOWN_NAME) {
